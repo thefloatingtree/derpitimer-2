@@ -2,3 +2,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+div::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+div::-webkit-scrollbar {
+    width: 12px;
+    background-color: transparent;
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: #262e3b;
+}

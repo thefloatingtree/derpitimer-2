@@ -17,5 +17,8 @@
     "autoprefixer": "^10.3.7",
     "cssnano": "^5.0.8",
     "tailwindcss": "^2.2.16"
+  },
+  "dependencies": {
+    "svelte-outside-click": "^1.1.1"
   }
 }
