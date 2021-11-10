@@ -1,28 +1,30 @@
 <script>
     import { fade, fly } from "svelte/transition";
     import clickOutside from "svelte-outside-click";
+    
     export let items = [];
     export let fullWidth = false;
 
-    let active = false;
+    let open = false;
     let selectedItem = items[0] ? items[0] : "Dropdown";
 </script>
 
 <div class="relative inline-block text-left">
     <button
         on:click={() => {
-            active = !active;
+            open = !open;
         }}
-        on:keyup={(e) => {
+        on:keydown={(e) => {
+            if (open) e.preventDefault()
             const index = items.findIndex((item) => item === selectedItem);
-            if (e.code === "Escape") active = false;
-            if (e.code === "ArrowUp" || e.code === "ArrowLeft")
+            if (e.code === "Escape" || e.code === "Space" || e.code === "Enter") open = false;
+            if (open && (e.code === "ArrowUp" || e.code === "ArrowLeft"))
                 selectedItem = items[(index - 1 + items.length) % items.length];
-            if (e.code === "ArrowDown" || e.code === "ArrowRight")
+            if (open && (e.code === "ArrowDown" || e.code === "ArrowRight" || e.code === "Tab"))
                 selectedItem = items[(index + 1) % items.length];
         }}
         use:clickOutside={() => {
-            active = false;
+            open = false;
         }}
         type="button"
         class:w-full={fullWidth}
@@ -49,7 +51,7 @@
         </svg>
     </button>
 
-    {#if active}
+    {#if open}
         <div
             in:fly={{ y: 10, duration: 200 }}
             out:fade={{ duration: 100 }}
