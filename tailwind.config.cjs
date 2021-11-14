@@ -11,6 +11,12 @@ const config = {
       },
       screens: {
         'xs': '345px'
+      },
+      scale: {
+        '101': '1.01'
+      },
+      minWidth: {
+        '10': '10rem'
       }
     }
   },
