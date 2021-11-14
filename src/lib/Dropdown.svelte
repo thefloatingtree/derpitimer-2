@@ -5,6 +5,7 @@
 
     export let items = [];
     export let fullWidth = false;
+    export let color = "white";
 
     let open = false;
     export let value = items[0] ? items[0] : "Dropdown";
@@ -40,7 +41,7 @@
                     value = items[(index + 1) % items.length];
             }}
             {fullWidth}
-            color="white"
+            {color}
         >
             <div class="flex items-center justify-between w-full">
                 <span>{value}</span>

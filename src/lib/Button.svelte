@@ -8,7 +8,7 @@
     const colors = {
         blue: "text-white bg-blue-500 focus:ring-blue-500 hover:bg-blue-700 shadow-md",
         purple: "text-white bg-purple-500 focus:ring-purple-500 hover:bg-purple-700 shadow-md",
-        gray: "text-white bg-background-light focus:ring-background-light hover:bg-white hover:bg-opacity-20 shadow-md",
+        gray: "text-white bg-background-light focus:ring-background-light hover:bg-background-light-light shadow-md",
         white: "bg-white text-black focus:ring-blue-500 hover:bg-gray-200 shadow-md",
         transparent: "text-white bg-opacity-0 hover:bg-white hover:bg-opacity-20 shadow-none focus:ring-white focus:ring-opacity-20",
     }

@@ -1,4 +1,5 @@
 <script>
+  import Notifications from "./lib/Notifications.svelte";
   import Settings from "./pages/Settings.svelte";
   import Timer from "./pages/Timer.svelte";
 
@@ -10,6 +11,7 @@
 </script>
 
 <main>
+  <Notifications />
   {#if page === SETTINGS_PAGE && !transitionPlaying}
     <Settings
       goToTimer={() => {
@@ -23,6 +25,6 @@
   {/if}
 
   {#if page === TIMER_PAGE && !transitionPlaying}
-   <Timer></Timer>
+    <Timer />
   {/if}
 </main>

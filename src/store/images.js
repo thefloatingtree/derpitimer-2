@@ -1,6 +1,7 @@
 import { writable, derived } from "svelte/store";
 import { sortOrder, tags } from "./settings";
 
+export const totalImages = writable(0)
 export const images = writable([])
 export const currentPage = writable(1)
 

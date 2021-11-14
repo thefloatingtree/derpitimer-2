@@ -14,10 +14,11 @@
         timeInterval,
         timeIntervalUnit,
     } from "../store/settings";
-    import { currentPage, images, nextPageURL } from "../store/images";
+    import { currentPage, images, nextPageURL, totalImages } from "../store/images";
     import PreviewList from "../lib/PreviewList.svelte";
     import Popover from "../lib/Popover.svelte";
     import { tagGroups } from "../store/tagGroups";
+import notifictions from "../store/notifications";
 
     export let goToTimer = () => {};
 
@@ -27,29 +28,33 @@
     let lastPreviewURL;
 
     const onContinue = () => {
-        if (!$tags) return; // Probably need to alert here or something
+        if (!$tags) return notifictions.addNotification("Tag list is empty, try adding some tags!");
 
         continueDisabled = true;
         fetch($nextPageURL)
             .then((res) => res.json())
             .then((res) => {
+                totalImages.set(res.total)
                 currentPage.set(1);
                 images.set(res.images);
                 continueDisabled = false;
-                currentPage.update((v) => (v + 1) % Math.floor(res.total / 15));
+                currentPage.update((v) => (v + 1) % Math.floor($totalImages / 15));
 
                 // goToTimer();
             });
+
+        notifictions.addNotification("Testing")
     };
 
     const onPreview = () => {
-        if (!$tags) return; // Probably need to alert here or something
+        if (!$tags) return notifictions.addNotification("Tag list is empty, try adding some tags!")
         if ($nextPageURL === lastPreviewURL) return (showPreview = true);
 
         previewLoading = true;
         fetch($nextPageURL)
             .then((res) => res.json())
             .then((res) => {
+                totalImages.set(res.total)
                 lastPreviewURL = $nextPageURL;
                 images.set(res.images);
                 previewLoading = false;
@@ -58,7 +63,8 @@
     };
 
     const makeTagGroup = () => {
-        if (!$tags || !$newTagGroupName) return;
+        if (!$tags) return notifictions.addNotification("Tag list is empty, try adding some tags!")
+        if (!$newTagGroupName) return notifictions.addNotification("Group name is empty")
 
         tagGroups.update(groups => {
             const filteredGroups = groups.filter(g => g.name != $newTagGroupName)
@@ -100,11 +106,12 @@
                         <div class="flex space-x-3">
                             <input
                                 type="number"
-                                class="transition-all ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500"
+                                class="transition-all ease-out duration-300 bg-background-light text-white focus:bg-white focus:bg-opacity-20 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500"
                                 bind:value={$timeInterval}
                             />
                             <Dropdown
                                 items={["Seconds", "Minutes", "Hours"]}
+                                color="gray"
                                 bind:value={$timeIntervalUnit}
                             />
                         </div>
@@ -114,13 +121,14 @@
                         <h3 class="text-white font-semibold">Tag List</h3>
                         <input
                             type="text"
-                            class="transition-all ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500"
+                            class="transition-all bg-background-light text-white focus:bg-white focus:bg-opacity-20 ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500"
                             placeholder="twilight sparkle, cute"
                             bind:value={$tags}
                         />
                         <h3 class="text-white font-semibold">Sort Order</h3>
                         <Dropdown
                             items={["Score", "Random", "Upvotes", "ID"]}
+                            color="gray"
                             fullWidth
                             bind:value={$sortOrder}
                         />
