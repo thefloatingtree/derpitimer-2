@@ -1,9 +1,12 @@
 <script>
-    import { fade, scale } from "svelte/transition";
+    import { fade } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
     import { sortOrder, tags } from "../store/settings";
     import { tagGroups } from "../store/tagGroups";
     import Button from "./Button.svelte";
+
+    let shouldAnimate = false
+    $: animate = (node, args) => shouldAnimate ? fade(node, args) : null;
 
     const onTagGroupAdd = (group) => {
         tags.set(group.tags);
@@ -11,16 +14,19 @@
     };
 
     const onTagGroupDelete = (group) => {
+        shouldAnimate = true;
         tagGroups.update(tags => {
             return tags.filter(g => g.name != group.name)
         })
     };
+
 </script>
 
 <div class="space-y-3 pb-12 h-full">
     {#each $tagGroups as group (group.name)}
         <div
-            out:fade={{ easing: cubicOut, duration: 250 }}
+            on:outroend={() => shouldAnimate = false}
+            out:animate={{ easing: cubicOut, duration: 250 }}
             class="transition-all ease-in-out duration-300 bg-background-light p-3 pl-6 rounded-lg flex justify-between items-center space-x-3 {$tags +
                 $sortOrder ==
             group.tags + group.sortOrder

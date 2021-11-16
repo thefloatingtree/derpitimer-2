@@ -1,4 +1,5 @@
 <script>
+    import { navigate } from 'svelte-routing'
     import FeaturedImage from "../lib/FeaturedImage.svelte";
     import Button from "../lib/Button.svelte";
     import Dropdown from "../lib/Dropdown.svelte";
@@ -14,13 +15,16 @@
         timeInterval,
         timeIntervalUnit,
     } from "../store/settings";
-    import { currentPage, images, nextPageURL, totalImages } from "../store/images";
+    import {
+        currentPage,
+        images,
+        nextPageURL,
+        totalImages,
+    } from "../store/images";
     import PreviewList from "../lib/PreviewList.svelte";
     import Popover from "../lib/Popover.svelte";
     import { tagGroups } from "../store/tagGroups";
-import notifictions from "../store/notifications";
-
-    export let goToTimer = () => {};
+    import notifictions from "../store/notifications";
 
     let continueDisabled = false;
     let showPreview = false;
@@ -28,33 +32,40 @@ import notifictions from "../store/notifications";
     let lastPreviewURL;
 
     const onContinue = () => {
-        if (!$tags) return notifictions.addNotification("Tag list is empty, try adding some tags!");
+        if (!$tags)
+            return notifictions.addNotification(
+                "Tag list is empty, try adding some tags!"
+            );
 
         continueDisabled = true;
         fetch($nextPageURL)
             .then((res) => res.json())
             .then((res) => {
-                totalImages.set(res.total)
+                totalImages.set(res.total);
                 currentPage.set(1);
                 images.set(res.images);
                 continueDisabled = false;
-                currentPage.update((v) => (v + 1) % Math.floor($totalImages / 15));
-
-                // goToTimer();
+                currentPage.update(
+                    (v) => (v + 1) % Math.floor($totalImages / 15)
+                );
+                navigate('/timer');
             });
 
-        notifictions.addNotification("Testing")
+        notifictions.addNotification("Testing");
     };
 
     const onPreview = () => {
-        if (!$tags) return notifictions.addNotification("Tag list is empty, try adding some tags!")
+        if (!$tags)
+            return notifictions.addNotification(
+                "Tag list is empty, try adding some tags!"
+            );
         if ($nextPageURL === lastPreviewURL) return (showPreview = true);
 
         previewLoading = true;
         fetch($nextPageURL)
             .then((res) => res.json())
             .then((res) => {
-                totalImages.set(res.total)
+                totalImages.set(res.total);
                 lastPreviewURL = $nextPageURL;
                 images.set(res.images);
                 previewLoading = false;
@@ -63,13 +74,22 @@ import notifictions from "../store/notifications";
     };
 
     const makeTagGroup = () => {
-        if (!$tags) return notifictions.addNotification("Tag list is empty, try adding some tags!")
-        if (!$newTagGroupName) return notifictions.addNotification("Group name is empty")
+        if (!$tags)
+            return notifictions.addNotification(
+                "Tag list is empty, try adding some tags!"
+            );
+        if (!$newTagGroupName)
+            return notifictions.addNotification("Group name is empty");
 
-        tagGroups.update(groups => {
-            const filteredGroups = groups.filter(g => g.name != $newTagGroupName)
-            return [{ name: $newTagGroupName, tags: $tags, sortOrder: $sortOrder }, ...filteredGroups]
-        })
+        tagGroups.update((groups) => {
+            const filteredGroups = groups.filter(
+                (g) => g.name != $newTagGroupName
+            );
+            return [
+                { name: $newTagGroupName, tags: $tags, sortOrder: $sortOrder },
+                ...filteredGroups,
+            ];
+        });
     };
 </script>
 
@@ -140,10 +160,13 @@ import notifictions from "../store/notifications";
                                     class="transition-all ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 border-gray-200 border-2"
                                     placeholder="Untitled Tag Group"
                                     bind:value={$newTagGroupName}
-                                    on:keyup={e=>e.key==='Enter' && makeTagGroup()}
+                                    on:keyup={(e) =>
+                                        e.key === "Enter" && makeTagGroup()}
                                     autofocus
                                 />
-                                <Button on:click={makeTagGroup}>Make Group</Button>
+                                <Button on:click={makeTagGroup}
+                                    >Make Group</Button
+                                >
                             </div>
                         </Popover>
                     </div>
@@ -162,7 +185,7 @@ import notifictions from "../store/notifications";
     </div>
 
     <div
-        class="hidden md:inline md:col-span-6 lg:col-span-7 xl:col-span-8 2xl:col-span-9 h-full relative overflow-hidden"
+        class="hidden md:inline md:col-span-6 lg:col-span-7 xl:col-span-8 2xl:col-span-9 h-full relative overflow-hidden bg-graph-texture"
     >
         <FeaturedImage on:outroend />
     </div>

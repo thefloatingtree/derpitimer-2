@@ -18,6 +18,9 @@ const config = {
       },
       minWidth: {
         '10': '10rem'
+      },
+      maxHeight: {
+        '100vh': '100vh'
       }
     }
   },

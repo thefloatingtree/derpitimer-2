@@ -102,7 +102,7 @@
             {#each $images as image}
                 <div class="relative">
                     {#if image.showTags}
-                        <div class="absolute bg-white rounded-lg p-3 text-background overflow-y-auto font-mono bottom-0 m-3 right-16 left-0 top-0">
+                        <div transition:fade={{ easing: cubicOut, duration: 250 }} class="absolute bg-white rounded-lg p-3 text-background overflow-y-auto font-mono bottom-0 m-3 right-16 left-0 top-0">
                             {image.tags.join(', ')}
                         </div>
                     {/if}
