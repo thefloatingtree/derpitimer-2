@@ -25,7 +25,7 @@
         <div
             in:fly={{ y: 10, duration: 200 }}
             out:fade={{ duration: 100 }}
-            class="origin-top-right absolute right-0 mt-2 min-w-10 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 focus:ring-4 focus:ring-blue-500"
+            class="origin-top-right absolute right-0 mt-2 w-full min-w-10 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 focus:ring-4 focus:ring-blue-500"
         >
             {#if arrow}
                 <div class="absolute -top-1 right-1/2">

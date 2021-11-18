@@ -9,8 +9,8 @@
 <main>
   <Notifications />
   <Router>
-    <Route path="/timer"><Timer /></Route>
     <Route path="/"><Settings /></Route>
+    <Route path="timer"><Timer /></Route>
   </Router>
 </main>
 

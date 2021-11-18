@@ -1,5 +1,5 @@
 <script>
-    import { navigate } from 'svelte-routing'
+    import { navigate } from "svelte-routing";
     import FeaturedImage from "../lib/FeaturedImage.svelte";
     import Button from "../lib/Button.svelte";
     import Dropdown from "../lib/Dropdown.svelte";
@@ -25,6 +25,7 @@
     import Popover from "../lib/Popover.svelte";
     import { tagGroups } from "../store/tagGroups";
     import notifictions from "../store/notifications";
+    import TimerDisplay from "../lib/TimerDisplay.svelte";
 
     let continueDisabled = false;
     let showPreview = false;
@@ -36,6 +37,10 @@
             return notifictions.addNotification(
                 "Tag list is empty, try adding some tags!"
             );
+        if (!$timeInterval)
+            return notifictions.addNotification(
+                "Time interval is empty"
+            )
 
         continueDisabled = true;
         fetch($nextPageURL)
@@ -48,10 +53,8 @@
                 currentPage.update(
                     (v) => (v + 1) % Math.floor($totalImages / 15)
                 );
-                navigate('/timer');
+                navigate("timer");
             });
-
-        notifictions.addNotification("Testing");
     };
 
     const onPreview = () => {
@@ -103,29 +106,35 @@
                     class="flex flex-col space-y-6"
                     in:fade={{ easing: cubicOut, duration: 300 }}
                 >
-                    <h1 class="pb-1 text-4xl font-medium text-white">
-                        Derpitimer
-                    </h1>
-                    <div class="flex items-stretch space-x-3">
-                        <Button
-                            on:click={onPreview}
-                            loading={previewLoading}
-                            fullWidth
-                            color="purple">Preview</Button
-                        >
-                        <Button
-                            on:click={onContinue}
-                            disabled={continueDisabled}
-                            loading={continueDisabled}
-                            fullWidth>Start</Button
-                        >
+                    <div class="space-y-3">
+                        <p class="text-4xl font-semibold text-white py-3">
+                            Derpitimer
+                        </p>
+                        <div class="flex items-stretch space-x-3">
+                            <Button
+                                on:click={onPreview}
+                                loading={previewLoading}
+                                fullWidth
+                                color="purple">Preview</Button
+                            >
+                            <Button
+                                on:click={onContinue}
+                                disabled={continueDisabled}
+                                loading={continueDisabled}
+                                fullWidth>Start</Button
+                            >
+                        </div>
                     </div>
-                    <h2 class="text-3xl text-white">Timer Settings</h2>
-                    <div class="flex flex-col space-y-3">
-                        <h3 class="text-white font-semibold">Time Interval</h3>
+                    <h2 class="text-2xl font-semibold text-white">
+                        Timer Settings
+                    </h2>
+                    <div class="flex flex-col space-y-1">
+                        <h3 class="text-white opacity-75 font-semibold">
+                            Time Interval
+                        </h3>
                         <div class="flex space-x-3">
                             <input
-                                type="number"
+                                type="text"
                                 class="transition-all ease-out duration-300 bg-background-light text-white focus:bg-white focus:bg-opacity-20 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500"
                                 bind:value={$timeInterval}
                             />
@@ -136,16 +145,20 @@
                             />
                         </div>
                     </div>
-                    <h2 class="text-3xl text-white">Tags</h2>
+                    <h2 class="text-2xl font-semibold text-white">Tags</h2>
                     <div class="flex flex-col space-y-3">
-                        <h3 class="text-white font-semibold">Tag List</h3>
+                        <h3 class="text-white opacity-75 font-semibold">
+                            Tag List
+                        </h3>
                         <input
                             type="text"
                             class="transition-all bg-background-light text-white focus:bg-white focus:bg-opacity-20 ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500"
                             placeholder="twilight sparkle, cute"
                             bind:value={$tags}
                         />
-                        <h3 class="text-white font-semibold">Sort Order</h3>
+                        <h3 class="text-white opacity-75 font-semibold">
+                            Sort Order
+                        </h3>
                         <Dropdown
                             items={["Score", "Random", "Upvotes", "ID"]}
                             color="gray"
@@ -154,7 +167,7 @@
                         />
                         <Popover>
                             <Button fullWidth color="gray">Make Group</Button>
-                            <div slot="popover" class="p-3 flex space-x-3">
+                            <div slot="popover" class="p-3 space-y-3 w-full">
                                 <input
                                     type="text"
                                     class="transition-all ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 border-gray-200 border-2"
@@ -162,15 +175,16 @@
                                     bind:value={$newTagGroupName}
                                     on:keyup={(e) =>
                                         e.key === "Enter" && makeTagGroup()}
-                                    autofocus
                                 />
-                                <Button on:click={makeTagGroup}
+                                <Button fullWidth on:click={makeTagGroup}
                                     >Make Group</Button
                                 >
                             </div>
                         </Popover>
                     </div>
-                    <h2 class="text-3xl text-white">Tag Groups</h2>
+                    <h2 class="text-2xl font-semibold text-white">
+                        Tag Groups
+                    </h2>
                     <TagGroupList />
                 </div>
             {:else}
