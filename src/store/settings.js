@@ -8,6 +8,7 @@ export const timeInterval = persist(writable("60"), localStorage(), 'timeInterva
 export const timeIntervalUnit = persist(writable("Seconds"), localStorage(), 'timeIntervalUnit')
 
 timeInterval.subscribe(value => {
+    value = String(value)
     if (value.includes('.') || value.includes('-')) {
         timeInterval.set(value.replace('.', ''))
         timeInterval.set(value.replace('-', ''))
