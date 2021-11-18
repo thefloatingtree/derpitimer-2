@@ -23,6 +23,7 @@
     $: imageSourceUrl = currentImage.source_url;
 
     $: {
+        currentImageIndex
         timerDisplay?.stop();
         timerDisplay?.reset();
         timerDisplay?.start();
