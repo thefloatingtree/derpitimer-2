@@ -4,6 +4,7 @@
     import Button from "./Button.svelte";
 
     import loadImage from "image-promise";
+import notifications from "../store/notifications";
 
     let src;
     let imageSourceUrl;
@@ -83,9 +84,12 @@
     </div>
 {/if}
 {#if isLoading}
+    
     <div
-        class="absolute bottom-0 right-0 p-3 m-3 text-white bg-background rounded-md"
+        class="absolute bottom-0 right-0 m-3"
     >
+    <Button on:click={() => { notifications.addNotification("✨🐴✨") }} color="gray">
         Loading Featured Image...
+    </Button>
     </div>
 {/if}
