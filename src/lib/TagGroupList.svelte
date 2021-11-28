@@ -1,7 +1,7 @@
 <script>
     import { fade } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
-    import { sortOrder, tags } from "../store/settings";
+    import { minimumScore, sortOrder, tags } from "../store/settings";
     import { tagGroups } from "../store/tagGroups";
     import Button from "./Button.svelte";
 
@@ -11,6 +11,7 @@
     const onTagGroupAdd = (group) => {
         tags.set(group.tags);
         sortOrder.set(group.sortOrder);
+        minimumScore.set(group.minimumScore);
     };
 
     const onTagGroupDelete = (group) => {
@@ -28,8 +29,8 @@
             on:outroend={() => shouldAnimate = false}
             out:animate={{ easing: cubicOut, duration: 250 }}
             class="transition-all ease-in-out duration-300 bg-background-light p-3 pl-6 rounded-lg flex justify-between items-center space-x-3 {$tags +
-                $sortOrder ==
-            group.tags + group.sortOrder
+                $sortOrder + $minimumScore ==
+            group.tags + group.sortOrder + group.minimumScore
                 ? 'ring-4 ring-blue-500 scale-101 bg-blue-200 bg-opacity-20'
                 : ''}"
         >
@@ -38,7 +39,7 @@
                     {group.name}
                 </h5>
                 <p class="text-gray-light font-normal font-mono">
-                    {group.sortOrder}
+                    {group.sortOrder}, Minimum Score: {group.minimumScore}
                 </p>
                 <p class="text-gray-light">{group.tags}</p>
             </div>

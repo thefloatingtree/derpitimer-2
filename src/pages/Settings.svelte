@@ -9,6 +9,8 @@
     import { cubicOut } from "svelte/easing";
 
     import {
+        globalTags,
+        minimumScore,
         newTagGroupName,
         sortOrder,
         tags,
@@ -26,6 +28,7 @@
     import { tagGroups } from "../store/tagGroups";
     import notifictions from "../store/notifications";
     import TimerDisplay from "../lib/TimerDisplay.svelte";
+    import Switch from "../lib/Switch.svelte";
 
     let continueDisabled = false;
     let showPreview = false;
@@ -38,9 +41,7 @@
                 "Tag list is empty, try adding some tags!"
             );
         if (!$timeInterval)
-            return notifictions.addNotification(
-                "Time interval is empty"
-            )
+            return notifictions.addNotification("Time interval is empty");
 
         continueDisabled = true;
         fetch($nextPageURL)
@@ -89,11 +90,13 @@
                 (g) => g.name != $newTagGroupName
             );
             return [
-                { name: $newTagGroupName, tags: $tags, sortOrder: $sortOrder },
+                { name: $newTagGroupName, tags: $tags, sortOrder: $sortOrder, minimumScore: $minimumScore },
                 ...filteredGroups,
             ];
         });
     };
+
+    let popoverWidth;
 </script>
 
 <div class="bg-background grid grid-cols-12 h-screen">
@@ -107,9 +110,66 @@
                     in:fade={{ easing: cubicOut, duration: 300 }}
                 >
                     <div class="space-y-3">
-                        <p class="text-4xl font-semibold text-white py-3">
-                            Derpitimer
-                        </p>
+                        <div
+                            bind:clientWidth={popoverWidth}
+                            class="flex justify-between items-center"
+                        >
+                            <p class="text-4xl font-semibold text-white py-3">
+                                Derpitimer
+                            </p>
+                            <Popover arrow={false} width={popoverWidth}>
+                                <div
+                                    slot="popover"
+                                    class="p-3 space-y-3 w-full"
+                                >
+                                    <h3
+                                        class="text-background-light-light font-bold"
+                                    >
+                                        Global Tags
+                                    </h3>
+                                    <input
+                                        type="text"
+                                        class="transition-all ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 border-gray-200 border-2"
+                                        placeholder="safe, -animated"
+                                        bind:value={$globalTags}
+                                    />
+                                    <!-- <div class="flex justify-between items-center">
+                                        <h3 class="text-background-light-light font-bold">
+                                            Repeat Images
+                                        </h3>
+                                        <Switch></Switch>
+                                    </div> -->
+                                    <!-- <div class="flex justify-between items-center">
+                                        <h3 class="text-background-light-light font-bold">
+                                            Allow Explicit Images
+                                        </h3>
+                                        <Switch></Switch>
+                                    </div> -->
+                                </div>
+                                <Button color="gray" iconOnly>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="h-6 w-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                        />
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                        />
+                                    </svg>
+                                </Button>
+                            </Popover>
+                        </div>
                         <div class="flex items-stretch space-x-3">
                             <Button
                                 on:click={onPreview}
@@ -145,7 +205,7 @@
                             />
                         </div>
                     </div>
-                    <h2 class="text-2xl font-semibold text-white">Tags</h2>
+                    <h2 class="text-2xl font-semibold text-white">Image Settings</h2>
                     <div class="flex flex-col space-y-3">
                         <h3 class="text-white opacity-75 font-semibold">
                             Tag List
@@ -157,15 +217,23 @@
                             bind:value={$tags}
                         />
                         <h3 class="text-white opacity-75 font-semibold">
+                            Minimum Score
+                        </h3>
+                        <input
+                            type="text"
+                            class="transition-all bg-background-light text-white focus:bg-white focus:bg-opacity-20 ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500"
+                            bind:value={$minimumScore}
+                        />
+                        <h3 class="text-white opacity-75 font-semibold">
                             Sort Order
                         </h3>
                         <Dropdown
-                            items={["Score", "Random", "Upvotes", "ID"]}
+                            items={["Random", "Score", "Upvotes", "ID"]}
                             color="gray"
                             fullWidth
                             bind:value={$sortOrder}
                         />
-                        <Popover>
+                        <Popover width={popoverWidth}>
                             <Button fullWidth color="gray">Make Group</Button>
                             <div slot="popover" class="p-3 space-y-3 w-full">
                                 <input

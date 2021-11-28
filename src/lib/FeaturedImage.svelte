@@ -11,12 +11,20 @@ import notifications from "../store/notifications";
     let derpiSourceUrl;
     let isLoading = true;
 
+    let useStaticFeaturedImage = true;
+
     fetch("https://derpibooru.org/api/v1/json/images/featured")
         .then((res) => res.json())
         .then((res) => {
             src = res.image.representations.full;
             imageSourceUrl = res.image.source_url;
             derpiSourceUrl = `https://derpibooru.org/images/${res.image.id}`;
+
+            if (useStaticFeaturedImage) {
+                src = "https://derpicdn.net/img/2018/12/24/1917683/full.jpg";
+                imageSourceUrl = "https://www.deviantart.com/jowybean/art/Cozy-778064075";
+                derpiSourceUrl = "https://derpibooru.org/images/1917683";
+            }
 
             loadImage(res.image.representations.full).then(
                 () => (isLoading = false)

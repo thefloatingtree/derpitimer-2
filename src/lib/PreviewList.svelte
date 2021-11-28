@@ -9,7 +9,7 @@
         nextPageURL,
         totalImages,
     } from "../store/images";
-    import { tags } from "../store/settings";
+    import { minimumScore, tags } from "../store/settings";
 
     import Button from "./Button.svelte";
     import Popover from "./Popover.svelte";
@@ -78,9 +78,12 @@
             in:fade={{ easing: cubicOut, duration: 500 }}
             class="flex flex-col h-full w-full items-center align-bottom"
         >
-            <p class="text-white font-semibold">There are no results for</p>
-            <p class="text-gray-light font-normal">
-                {$tags}
+            <p class="text-white font-semibold">There are no results</p>
+            <p class="text-gray-light font-normal text-center">
+                Tags: {$tags}
+            </p>
+            <p class="text-gray-light font-normal text-center">
+                Minimum score: {$minimumScore}
             </p>
         </div>
     {/if}
@@ -102,8 +105,14 @@
             {#each $images as image}
                 <div class="relative">
                     {#if image.showTags}
-                        <div transition:fade={{ easing: cubicOut, duration: 250 }} class="absolute bg-white rounded-lg p-3 text-background overflow-y-auto font-mono bottom-0 m-3 right-16 left-0 top-0">
-                            {image.tags.join(', ')}
+                        <div
+                            transition:fade={{
+                                easing: cubicOut,
+                                duration: 250,
+                            }}
+                            class="absolute bg-white rounded-lg p-3 text-background overflow-y-auto font-mono bottom-0 m-3 right-16 left-0 top-0"
+                        >
+                            {image.tags.join(", ")}
                         </div>
                     {/if}
                     <div class="absolute m-3 right-0">
@@ -124,7 +133,10 @@
                                     />
                                 </svg>
                             </Button>
-                            <div slot="popover" class="space-y-1">
+                            <div
+                                slot="popover"
+                                class="space-y-1"
+                            >
                                 <button
                                     on:click={() => {
                                         image.popover.close();
@@ -134,14 +146,14 @@
                                 >
                                     {image.showTags ? "Hide" : "Show"} Tags
                                 </button>
-                                <button
+                                <!-- <button
                                     on:click={() => {
                                         image.popover.close();
                                     }}
                                     class="px-4 py-2 w-full text-left rounded-md cursor-pointer hover:bg-gray-200 transition-all"
                                 >
                                     Blacklist
-                                </button>
+                                </button> -->
                                 <button
                                     on:click={() => {
                                         image.popover.close();
@@ -168,7 +180,11 @@
                     </div>
                     <img
                         in:fade={{ easing: cubicOut, duration: 500 }}
-                        class="w-full rounded-lg"
+                        on:click={() => {
+                            image.popover.close();
+                            image.showTags = !image.showTags;
+                        }}
+                        class="w-full rounded-lg cursor-pointer"
                         src={image.representations.medium}
                         alt="preview"
                     />
