@@ -90,7 +90,12 @@
                 (g) => g.name != $newTagGroupName
             );
             return [
-                { name: $newTagGroupName, tags: $tags, sortOrder: $sortOrder, minimumScore: $minimumScore },
+                {
+                    name: $newTagGroupName,
+                    tags: $tags,
+                    sortOrder: $sortOrder,
+                    minimumScore: $minimumScore,
+                },
                 ...filteredGroups,
             ];
         });
@@ -117,58 +122,110 @@
                             <p class="text-4xl font-semibold text-white py-3">
                                 Derpitimer
                             </p>
-                            <Popover arrow={false} width={popoverWidth}>
-                                <div
-                                    slot="popover"
-                                    class="p-3 space-y-3 w-full"
+                            <div class="flex space-x-3">
+                                <Popover
+                                    arrow={false}
+                                    width={popoverWidth}
+                                    xOffset="60px"
                                 >
-                                    <h3
-                                        class="text-background-light-light font-bold"
+                                    <Button color="gray" iconOnly>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="h-6 w-6"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            />
+                                        </svg>
+                                    </Button>
+                                    <div
+                                        slot="popover"
+                                        class="p-3 space-y-3 w-full"
                                     >
-                                        Global Tags
-                                    </h3>
-                                    <input
-                                        type="text"
-                                        class="transition-all ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 border-gray-200 border-2"
-                                        placeholder="safe, -animated"
-                                        bind:value={$globalTags}
-                                    />
-                                    <!-- <div class="flex justify-between items-center">
-                                        <h3 class="text-background-light-light font-bold">
-                                            Repeat Images
+                                        
+                                        <h2
+                                            class="text-background-light-light text-lg font-bold"
+                                        >
+                                            Help
+                                        </h2>
+                                        <h3
+                                            class="text-background-light-light font-bold"
+                                        >
+                                            What is Derpitimer?
                                         </h3>
-                                        <Switch></Switch>
-                                    </div> -->
-                                    <!-- <div class="flex justify-between items-center">
-                                        <h3 class="text-background-light-light font-bold">
-                                            Allow Explicit Images
+                                        <p>Put something here</p>
+                                        <h3
+                                            class="text-background-light-light font-bold"
+                                        >
+                                            How do I use it?
                                         </h3>
-                                        <Switch></Switch>
-                                    </div> -->
-                                </div>
-                                <Button color="gray" iconOnly>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
+                                        <p>Put something here</p>
+                                    </div>
+                                </Popover>
+                                <Popover arrow={false} width={popoverWidth}>
+                                    <div
+                                        slot="popover"
+                                        class="p-3 space-y-3 w-full"
                                     >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                    <h2
+                                            class="text-background-light-light text-lg font-bold"
+                                        >
+                                            Settings
+                                        </h2>
+                                        <h3
+                                            class="text-background-light-light font-bold"
+                                        >
+                                            Global Tags
+                                        </h3>
+                                        <input
+                                            type="text"
+                                            class="transition-all ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 border-gray-200 border-2"
+                                            placeholder="safe, -animated"
+                                            bind:value={$globalTags}
                                         />
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                        />
-                                    </svg>
-                                </Button>
-                            </Popover>
+                                        <!-- <div class="flex justify-between items-center">
+                                            <h3 class="text-background-light-light font-bold">
+                                                Repeat Images
+                                            </h3>
+                                            <Switch></Switch>
+                                        </div> -->
+                                        <!-- <div class="flex justify-between items-center">
+                                            <h3 class="text-background-light-light font-bold">
+                                                Allow Explicit Images
+                                            </h3>
+                                            <Switch></Switch>
+                                        </div> -->
+                                    </div>
+                                    <Button color="gray" iconOnly>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="h-6 w-6"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                            />
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                            />
+                                        </svg>
+                                    </Button>
+                                </Popover>
+                            </div>
                         </div>
                         <div class="flex items-stretch space-x-3">
                             <Button
@@ -205,7 +262,9 @@
                             />
                         </div>
                     </div>
-                    <h2 class="text-2xl font-semibold text-white">Image Settings</h2>
+                    <h2 class="text-2xl font-semibold text-white">
+                        Image Settings
+                    </h2>
                     <div class="flex flex-col space-y-3">
                         <h3 class="text-white opacity-75 font-semibold">
                             Tag List

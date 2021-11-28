@@ -4,6 +4,7 @@
     
     export let arrow = true;
     export let width = null;
+    export let xOffset = "0px";
 
     let open = false;
 
@@ -27,7 +28,7 @@
             <div
                 in:fly={{ y: 10, duration: 200 }}
                 out:fade={{ duration: 100 }}
-                style="width: {width}px"
+                style="width: {width}px; transform: translate({xOffset});"
                 class="origin-top-right absolute right-0 mt-2 min-w-10 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 focus:ring-4 focus:ring-blue-500"
             >
                 {#if arrow}
