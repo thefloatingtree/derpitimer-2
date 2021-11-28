@@ -13,7 +13,6 @@
 
     import Button from "./Button.svelte";
     import Popover from "./Popover.svelte";
-    import notifications from "../store/notifications";
 
     export let onBack = () => {};
 
@@ -157,6 +156,7 @@
                                 >
                                     Blacklist
                                 </button> -->
+                                {#if image.source_url}
                                 <button
                                     on:click={() => {
                                         image.popover.close();
@@ -166,6 +166,7 @@
                                 >
                                     Source
                                 </button>
+                                {/if}
                                 <button
                                     on:click={() => {
                                         image.popover.close();

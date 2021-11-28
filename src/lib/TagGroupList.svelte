@@ -20,7 +20,6 @@
             return tags.filter(g => g.name != group.name)
         })
     };
-
 </script>
 
 <div class="space-y-3 pb-12 h-full">
@@ -28,7 +27,8 @@
         <div
             on:outroend={() => shouldAnimate = false}
             out:animate={{ easing: cubicOut, duration: 250 }}
-            class="transition-all ease-in-out duration-300 bg-background-light p-3 pl-6 rounded-lg flex justify-between items-center space-x-3 {$tags +
+            on:click={() => onTagGroupAdd(group)}
+            class="transition-all ease-in-out duration-300 bg-background-light p-3 pl-6 rounded-lg flex justify-between items-center space-x-3 cursor-pointer hover:bg-blue-200 hover:bg-opacity-20 {$tags +
                 $sortOrder + $minimumScore ==
             group.tags + group.sortOrder + group.minimumScore
                 ? 'ring-4 ring-blue-500 scale-101 bg-blue-200 bg-opacity-20'
@@ -44,26 +44,6 @@
                 <p class="text-gray-light">{group.tags}</p>
             </div>
             <div class="flex flex-col space-y-1">
-                <Button
-                    on:click={() => onTagGroupAdd(group)}
-                    color="transparent"
-                    iconOnly
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 text-gray-light"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 4v16m8-8H4"
-                        />
-                    </svg>
-                </Button>
                 <Button
                     on:click={() => onTagGroupDelete(group)}
                     color="transparent"

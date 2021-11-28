@@ -1,5 +1,5 @@
 <script>
-    import { images } from "../store/images";
+    import { currentPage, images, nextPageURL, totalImages } from "../store/images";
     import { fade } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
 
@@ -8,6 +8,7 @@
     import TimerDisplay from "../lib/TimerDisplay.svelte";
     import { navigate } from "svelte-routing";
     import { onMount } from "svelte";
+    import loadImage from "image-promise";
 
     onMount(() => {
         if ($images.length === 0) {
@@ -17,16 +18,44 @@
     });
 
     let currentImageIndex = 0;
+    let imageLoading = false;
+    $: noMoreImages = $totalImages === $images.length && $images.length === currentImageIndex + 1;
 
     $: currentImage = $images[currentImageIndex] || {};
     $: derpiSourceUrl = `https://derpibooru.org/images/${currentImage.id}`;
     $: imageSourceUrl = currentImage.source_url;
 
     $: {
-        currentImageIndex
+        imageLoading = true;
+        if (currentImage?.representations?.large) {
+            console.log("ran");
+            loadImage(currentImage.representations.large).then(() => {
+                imageLoading = false;
+                timerDisplay?.stop();
+                timerDisplay?.reset();
+                timerDisplay?.start();
+            });
+        }
+    }
+
+    $: {
+        console.log(noMoreImages)
+        console.log($totalImages, $images.length, currentImageIndex)
+    }
+
+    $: {
+        currentImageIndex;
         timerDisplay?.stop();
         timerDisplay?.reset();
-        timerDisplay?.start();
+
+        if (currentImageIndex === $images.length - 5 && $totalImages > $images.length) {
+            currentPage.update(v => v + 1)
+            fetch($nextPageURL)
+                .then(res => res.json())
+                .then(res => {
+                    images.update(v => [...v, ...res.images])
+                })
+        }
     }
 
     let timerDisplay;
@@ -40,7 +69,7 @@
                 bind:this={timerDisplay}
                 bind:playing={timerDisplayPlaying}
                 on:finished={() => {
-                    currentImageIndex += 1;
+                    if (!noMoreImages) currentImageIndex += 1;
                 }}
             />
         </Button>
@@ -59,9 +88,16 @@
                 if (currentImageIndex) currentImageIndex -= 1;
             }}>Previous</Button
         >
-        <Button color="gray" on:click={() => (currentImageIndex += 1)}
+        <Button color="gray" on:click={() => {
+            if (!noMoreImages) currentImageIndex += 1
+            }}
             >Next</Button
         >
+    </div>
+    <div class="absolute top-0 right-0 m-3 z-50">
+        <Button color="gray">
+            {currentImageIndex + 1} of {$totalImages}
+        </Button>
     </div>
     <div class="absolute bottom-0 right-0 m-3 z-50">
         <div class="flex space-x-3">
@@ -113,12 +149,18 @@
     </div>
     <div class="h-full grid">
         {#key currentImageIndex}
-            <img
-                in:fade={{ easing: cubicOut, duration: 500 }}
-                class="m-auto max-w-full max-h-100vh rounded-lg scale-95"
-                src={currentImage?.representations?.large}
-                alt="test"
-            />
+            {#if !imageLoading}
+                <img
+                    in:fade={{ easing: cubicOut, duration: 500 }}
+                    class="m-auto max-w-full max-h-100vh rounded-lg scale-95"
+                    src={currentImage?.representations?.large}
+                    alt="test"
+                />
+            {:else}
+                <div class="m-auto max-w-full max-h-100vh text-center">
+                    <p class="text-white font-semibold animate-pulse">Loading image</p>
+                </div>
+            {/if}
         {/key}
     </div>
 </div>
