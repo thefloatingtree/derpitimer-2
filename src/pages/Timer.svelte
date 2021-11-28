@@ -28,7 +28,6 @@
     $: {
         imageLoading = true;
         if (currentImage?.representations?.large) {
-            console.log("ran");
             loadImage(currentImage.representations.large).then(() => {
                 imageLoading = false;
                 timerDisplay?.stop();
@@ -37,12 +36,7 @@
             });
         }
     }
-
-    $: {
-        console.log(noMoreImages)
-        console.log($totalImages, $images.length, currentImageIndex)
-    }
-
+    
     $: {
         currentImageIndex;
         timerDisplay?.stop();
