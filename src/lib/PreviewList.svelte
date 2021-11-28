@@ -37,8 +37,8 @@
         isLoaded = false;
         currentPage.update((v) =>
             wrapIndex(
-                v + (wrapIndex(v + 1, Math.floor($totalImages / 15)) ? 1 : 2),
-                Math.floor($totalImages / 15)
+                v + 1,
+                Math.floor($totalImages / 15) + 1
             )
         );
         fetch($nextPageURL)
@@ -52,7 +52,7 @@
     const onPrev = () => {
         isLoaded = false;
         currentPage.update((v) =>
-            wrapIndex(v - (v - 1 ? 1 : 2), Math.floor($totalImages / 15))
+            wrapIndex(v - 1, Math.floor($totalImages / 15) + 1)
         );
         fetch($nextPageURL)
             .then((res) => res.json())
@@ -89,18 +89,24 @@
     {/if}
     <div class="space-y-3">
         {#if isLoaded && $images.length}
-            <div class="flex space-x-3">
-                <Button on:click={onPrev} fullWidth color="gray"
-                    >Previous Page</Button
-                >
-                <Button on:click={onNext} fullWidth color="gray"
-                    >Next Page</Button
-                >
-            </div>
+            {#if $totalImages > 15}
+                <div class="flex space-x-3">
+                    <Button on:click={onPrev} fullWidth color="gray"
+                        >Previous Page</Button
+                    >
+                    <Button on:click={onNext} fullWidth color="gray"
+                        >Next Page</Button
+                    >
+                </div>
+            {/if}
             <p
-                class="text-white text-center whitespace-nowrap p-3 px-6 bg-background-light rounded-lg"
+                class="text-white text-center whitespace-nowrap p-3 px-6 bg-background-light rounded-lg flex justify-between"
             >
-                {$currentPage * 15} of {$totalImages}
+                <span
+                    >Page {$currentPage + 1} of {Math.floor($totalImages / 15) +
+                        1}</span
+                >
+                <span>{$totalImages} Images</span>
             </p>
             {#each $images as image}
                 <div class="relative">
@@ -133,10 +139,7 @@
                                     />
                                 </svg>
                             </Button>
-                            <div
-                                slot="popover"
-                                class="space-y-1"
-                            >
+                            <div slot="popover" class="space-y-1">
                                 <button
                                     on:click={() => {
                                         image.popover.close();
@@ -191,18 +194,24 @@
                 </div>
             {/each}
             <p
-                class="text-white text-center whitespace-nowrap p-3 px-6 bg-background-light rounded-lg"
+                class="text-white text-center whitespace-nowrap p-3 px-6 bg-background-light rounded-lg flex justify-between"
             >
-                {$currentPage * 15} of {$totalImages}
+                <span
+                    >Page {$currentPage + 1} of {Math.floor($totalImages / 15) +
+                        1}</span
+                >
+                <span>{$totalImages} Images</span>
             </p>
-            <div class="flex space-x-3">
-                <Button on:click={onPrev} fullWidth color="gray"
-                    >Previous Page</Button
-                >
-                <Button on:click={onNext} fullWidth color="gray"
-                    >Next Page</Button
-                >
-            </div>
+            {#if $totalImages > 15}
+                <div class="flex space-x-3">
+                    <Button on:click={onPrev} fullWidth color="gray"
+                        >Previous Page</Button
+                    >
+                    <Button on:click={onNext} fullWidth color="gray"
+                        >Next Page</Button
+                    >
+                </div>
+            {/if}
         {/if}
     </div>
     <div class="pb-6" />

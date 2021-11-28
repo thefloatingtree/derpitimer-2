@@ -15,14 +15,14 @@ function cleanTags(tagString) {
 
 export const totalImages = writable(0)
 export const images = writable([])
-export const currentPage = writable(1)
+export const currentPage = writable(0)
 export const randomSortSeed = writable(Date.now())
 
 export const nextPageURL = derived([currentPage, tags, sortOrder, globalTags, minimumScore, randomSortSeed], ([$currentPage, $tags, $sortOrder, $globalTags, $minimumScore, $randomSortSeed], set) => {
     let url = "https://derpibooru.org/api/v1/json/search/images"
     url += $tags ? "?q=" + cleanTags($tags + "," + $globalTags + ",safe" + ",score.gte:" + $minimumScore) : ""
     url += $sortOrder ? `&sf=${$sortOrder.toLowerCase()}:${$randomSortSeed}` : ""
-    url += `&page=${$currentPage}`
+    url += `&page=${$currentPage + 1}`
 
     set(url)
 })
