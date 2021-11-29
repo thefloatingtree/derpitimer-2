@@ -7,12 +7,12 @@ export default {
     set,
     subscribe,
     update,
-    addNotification(message) {
+    addNotification(message, color = "red") {
         const id = nanoid()
         setTimeout(() => {
             this.removeNotification(id)
         }, 2000)
-        update(notifications => [...notifications, { message, id }])
+        update(notifications => [...notifications, { message, color, id }])
     },
     removeNotification(id) {
         update(notifcations => {

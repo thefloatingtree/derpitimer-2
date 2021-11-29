@@ -2,6 +2,7 @@
   import { Router, Route } from "svelte-routing";
 
   import Notifications from "./lib/Notifications.svelte";
+  import Import from "./pages/Import.svelte";
   import Settings from "./pages/Settings.svelte";
   import Timer from "./pages/Timer.svelte";
 </script>
@@ -11,6 +12,7 @@
   <Router>
     <Route path="/"><Settings /></Route>
     <Route path="timer"><Timer /></Route>
+    <Route path="import/group"><Import /></Route>
   </Router>
 </main>
 

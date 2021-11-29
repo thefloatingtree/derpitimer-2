@@ -29,6 +29,7 @@
     import notifictions from "../store/notifications";
     import TimerDisplay from "../lib/TimerDisplay.svelte";
     import Switch from "../lib/Switch.svelte";
+    import { nanoid } from "nanoid";
 
     let continueDisabled = false;
     let showPreview = false;
@@ -86,22 +87,21 @@
             return notifictions.addNotification("Group name is empty");
 
         tagGroups.update((groups) => {
-            const filteredGroups = groups.filter(
-                (g) => g.name != $newTagGroupName
-            );
             return [
                 {
                     name: $newTagGroupName,
                     tags: $tags,
                     sortOrder: $sortOrder,
                     minimumScore: $minimumScore,
+                    id: nanoid(),
                 },
-                ...filteredGroups,
+                ...groups,
             ];
         });
     };
 
     let popoverWidth;
+    let popovers = {};
 </script>
 
 <div class="bg-background grid grid-cols-12 h-screen">
@@ -148,7 +148,6 @@
                                         slot="popover"
                                         class="p-3 space-y-3 w-full"
                                     >
-                                        
                                         <h2
                                             class="text-background-light-light text-lg font-bold"
                                         >
@@ -173,7 +172,7 @@
                                         slot="popover"
                                         class="p-3 space-y-3 w-full"
                                     >
-                                    <h2
+                                        <h2
                                             class="text-background-light-light text-lg font-bold"
                                         >
                                             Settings
@@ -292,7 +291,10 @@
                             fullWidth
                             bind:value={$sortOrder}
                         />
-                        <Popover width={popoverWidth}>
+                        <Popover
+                            bind:this={popovers.makeGroup}
+                            width={popoverWidth}
+                        >
                             <Button fullWidth color="gray">Make Group</Button>
                             <div slot="popover" class="p-3 space-y-3 w-full">
                                 <input
@@ -301,10 +303,18 @@
                                     placeholder="Untitled Tag Group"
                                     bind:value={$newTagGroupName}
                                     on:keyup={(e) =>
-                                        e.key === "Enter" && makeTagGroup()}
+                                        e.key === "Enter" &&
+                                        (() => {
+                                            makeTagGroup();
+                                            popovers.makeGroup.close();
+                                        })}
                                 />
-                                <Button fullWidth on:click={makeTagGroup}
-                                    >Make Group</Button
+                                <Button
+                                    fullWidth
+                                    on:click={() => {
+                                        makeTagGroup();
+                                        popovers.makeGroup.close();
+                                    }}>Make Group</Button
                                 >
                             </div>
                         </Popover>
