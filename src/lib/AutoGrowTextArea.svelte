@@ -5,6 +5,7 @@
     import { autoresize } from "svelte-textarea-autoresize";
 
     export let value = "";
+    export let placeholder = "";
     export let color = "white";
 
     function updateTextareaValue() {
@@ -21,7 +22,7 @@
 
     const colors = {
         white: "border-gray-200 border-2",
-        gray: "bg-background-light text-white focus:bg-white focus:bg-opacity-20",
+        gray: "bg-background-light text-white focus:bg-white focus:bg-opacity-20 placeholder-gray-light",
     };
 
     $: {
@@ -32,6 +33,7 @@
 
 <textarea
     class="transition-shadow duration-300 ease-out w-full py-3 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 resize-none overflow-hidden {colors[color]}"
+    {placeholder}
     bind:this={textarea}
     on:input={(e) => {
         value = e.target.value.replace(/‑/g, "-");

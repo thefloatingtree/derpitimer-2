@@ -21,6 +21,7 @@
         currentPage,
         images,
         nextPageURL,
+        randomSortSeed,
         totalImages,
     } from "../store/images";
     import PreviewList from "../lib/PreviewList.svelte";
@@ -171,41 +172,47 @@ import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
                                 <Popover arrow={false} width={popoverWidth}>
                                     <div
                                         slot="popover"
-                                        class="p-3 space-y-3 w-full"
+                                        class="p-3 space-y-4 w-full"
                                     >
                                         <h2
                                             class="text-background-light-light text-lg font-bold"
                                         >
                                             Settings
                                         </h2>
-                                        <h3
-                                            class="text-background-light-light font-bold"
-                                        >
-                                            Global Tags
-                                        </h3>
-                                        <!-- <textarea
-                                            type="text"
-                                            class="transition-all ease-out duration-300 w-full py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 border-gray-200 border-2 overflow-hidden"
-                                            placeholder="safe, -animated"
-                                            rows="4"
-                                            on:input={(e) => {
-                                                console.log(e.target.scrollHeight)
-                                            }}
-                                            bind:value={$globalTags}
-                                        ></textarea> -->
-                                        <AutoGrowTextArea bind:value={$globalTags}></AutoGrowTextArea>
-                                        <!-- <div class="flex justify-between items-center">
-                                            <h3 class="text-background-light-light font-bold">
-                                                Repeat Images
+                                        <div class="space-y-3">
+                                            <h3
+                                                class="text-background-light-light font-bold"
+                                            >
+                                                Global Tags
                                             </h3>
-                                            <Switch></Switch>
+                                            <AutoGrowTextArea bind:value={$globalTags}></AutoGrowTextArea>
+                                        </div>
+                                        <!-- <div class="space-y-3">
+                                            <div class="flex justify-between items-center">
+                                                <h3 class="text-background-light-light font-bold">
+                                                    Repeat Images
+                                                </h3>
+                                                <Switch></Switch>
+                                            </div>
+                                            <div class="flex justify-between items-center">
+                                                <h3 class="text-background-light-light font-bold">
+                                                    Allow Explicit Images
+                                                </h3>
+                                                <Switch></Switch>
+                                            </div>
                                         </div> -->
-                                        <!-- <div class="flex justify-between items-center">
-                                            <h3 class="text-background-light-light font-bold">
-                                                Allow Explicit Images
-                                            </h3>
-                                            <Switch></Switch>
-                                        </div> -->
+                                        <div class="space-y-2">
+                                            <Button fullWidth on:click={() => {
+                                                randomSortSeed.set(Date.now())
+                                                notifictions.addNotification("Randomized! 🎲", "blue")
+                                            }} color="gray">Re-Randomize Image Order</Button>
+                                            <!-- <Button fullWidth on:click={() => {
+                                                
+                                            }} color="gray">Restore Default Tag Groups</Button>
+                                            <Button fullWidth on:click={() => {
+                                                
+                                            }} color="gray">Restore Default Global Tags</Button> -->
+                                        </div>
                                     </div>
                                     <Button color="gray" iconOnly>
                                         <svg
@@ -274,7 +281,7 @@ import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
                         <h3 class="text-white opacity-75 font-semibold">
                             Tag List
                         </h3>
-                        <AutoGrowTextArea bind:value={$tags} color="gray"></AutoGrowTextArea>
+                        <AutoGrowTextArea bind:value={$tags} placeholder="twilight sparkle, cute . . ." color="gray"></AutoGrowTextArea>
                         <h3 class="text-white opacity-75 font-semibold">
                             Minimum Score
                         </h3>
