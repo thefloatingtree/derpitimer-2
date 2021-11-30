@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import { persist, localStorage } from "@macfja/svelte-persistent-store"
 
-const DEFAULT_GROUPS = [
+export const DEFAULT_GROUPS = [
     {
         name: "Solo Screencaps",
         tags: "screencap, solo, pony",

@@ -9,6 +9,7 @@
     import { cubicOut } from "svelte/easing";
 
     import {
+        DEFAULT_GLOBAL_TAGS,
         globalTags,
         minimumScore,
         newTagGroupName,
@@ -26,7 +27,7 @@
     } from "../store/images";
     import PreviewList from "../lib/PreviewList.svelte";
     import Popover from "../lib/Popover.svelte";
-    import { tagGroups } from "../store/tagGroups";
+    import { DEFAULT_GROUPS, tagGroups } from "../store/tagGroups";
     import notifictions from "../store/notifications";
     import TimerDisplay from "../lib/TimerDisplay.svelte";
     import Switch from "../lib/Switch.svelte";
@@ -106,12 +107,12 @@
     let popovers = {};
 
     $: {
-        $tags
-        $sortOrder
-        $minimumScore
-        $globalTags
+        $tags;
+        $sortOrder;
+        $minimumScore;
+        $globalTags;
 
-        currentPage.set(0)
+        currentPage.set(0);
     }
 </script>
 
@@ -137,7 +138,7 @@
                                 <Popover
                                     arrow={false}
                                     width={popoverWidth}
-                                    height=500
+                                    height="500"
                                     xOffset="60px"
                                 >
                                     <Button color="gray" iconOnly>
@@ -170,21 +171,54 @@
                                         >
                                             What is Derpitimer?
                                         </h3>
-                                        <p>A website that helps you do timed drawing studies, but with ponies!</p>
-                                        <p>Images are pulled from <a class="text-blue-500" href="https://derpibooru.org/">derpibooru.org</a></p>
+                                        <p>
+                                            A website that helps you do timed
+                                            drawing studies, but with ponies!
+                                        </p>
+                                        <p>
+                                            Images are pulled from <a
+                                                class="text-blue-500"
+                                                href="https://derpibooru.org/"
+                                                >derpibooru.org</a
+                                            >
+                                        </p>
                                         <!-- <p>Originally inspired by <a class="text-blue-500" href="https://line-of-action.com/">https://line-of-action.com/</a></p> -->
                                         <h3
                                             class="text-background-light-light font-bold"
                                         >
                                             How do I use it?
                                         </h3>
-                                        <p>Add derpibooru image tags into the input labled "Tags". If you don't know any tags, click on a tag group to load up example tags. Use a hyphen (-) to negate a tag.</p>
-                                        <p>Use the "Preview" button to see what comes up for your tags. Click on any image to pull up that image's tags, use this to narrow down your search further.</p>
-                                        <p>Under the settings cog, there are "Global Tags" which apply to every image search.</p>
-                                        <p>Once you feel happy with the list of images being returned, click the "Start" button to begin your timed drawing studies.</p>
+                                        <p>
+                                            Add derpibooru image tags into the
+                                            input labled "Tags". If you don't
+                                            know any tags, click on a tag group
+                                            to load up example tags. Use a
+                                            hyphen (-) to negate a tag.
+                                        </p>
+                                        <p>
+                                            Use the "Preview" button to see what
+                                            comes up for your tags. Click on any
+                                            image to pull up that image's tags,
+                                            use this to narrow down your search
+                                            further.
+                                        </p>
+                                        <p>
+                                            Under the settings cog, there are
+                                            "Global Tags" which apply to every
+                                            image search.
+                                        </p>
+                                        <p>
+                                            Once you feel happy with the list of
+                                            images being returned, click the
+                                            "Start" button to begin your timed
+                                            drawing studies.
+                                        </p>
                                     </div>
                                 </Popover>
-                                <Popover arrow={false} width={popoverWidth}>
+                                <Popover
+                                    arrow={false}
+                                    width={popoverWidth}
+                                >
                                     <div
                                         slot="popover"
                                         class="p-3 space-y-4 w-full"
@@ -194,6 +228,28 @@
                                         >
                                             Settings
                                         </h2>
+                                        <!-- <div class="space-y-3">
+                                            <div
+                                                class="flex justify-between items-center"
+                                            >
+                                                <h3
+                                                    class="text-background-light-light font-bold"
+                                                >
+                                                    Sound
+                                                </h3>
+                                                <Switch />
+                                            </div>
+                                            <div
+                                                class="flex justify-between items-center"
+                                            >
+                                                <h3
+                                                    class="text-background-light-light font-bold"
+                                                >
+                                                    Allow Explicit Images
+                                                </h3>
+                                                <Switch />
+                                            </div>
+                                        </div> -->
                                         <div class="space-y-3">
                                             <h3
                                                 class="text-background-light-light font-bold"
@@ -204,20 +260,6 @@
                                                 bind:value={$globalTags}
                                             />
                                         </div>
-                                        <!-- <div class="space-y-3">
-                                            <div class="flex justify-between items-center">
-                                                <h3 class="text-background-light-light font-bold">
-                                                    Repeat Images
-                                                </h3>
-                                                <Switch></Switch>
-                                            </div>
-                                            <div class="flex justify-between items-center">
-                                                <h3 class="text-background-light-light font-bold">
-                                                    Allow Explicit Images
-                                                </h3>
-                                                <Switch></Switch>
-                                            </div>
-                                        </div> -->
                                         <div class="space-y-2">
                                             <Button
                                                 fullWidth
@@ -233,12 +275,51 @@
                                                 color="gray"
                                                 >Re-Randomize Image Order</Button
                                             >
-                                            <!-- <Button fullWidth on:click={() => {
-                                                
-                                            }} color="gray">Restore Default Tag Groups</Button>
-                                            <Button fullWidth on:click={() => {
-                                                
-                                            }} color="gray">Restore Default Global Tags</Button> -->
+                                            <Button
+                                                fullWidth
+                                                on:click={() => {
+                                                    tagGroups.update(
+                                                        (groups) => {
+                                                            const deletedDefaults =
+                                                                DEFAULT_GROUPS.filter(
+                                                                    (group) => {
+                                                                        return !groups.find(
+                                                                            (
+                                                                                g
+                                                                            ) =>
+                                                                                g.id ===
+                                                                                group.id
+                                                                        );
+                                                                    }
+                                                                );
+                                                            return [
+                                                                ...deletedDefaults,
+                                                                ...groups,
+                                                            ];
+                                                        }
+                                                    );
+                                                    notifictions.addNotification(
+                                                        "Restored defaults! ✨",
+                                                        "blue"
+                                                    );
+                                                }}
+                                                color="gray"
+                                                >Restore Default Tag Groups</Button
+                                            >
+                                            <Button
+                                                fullWidth
+                                                on:click={() => {
+                                                    globalTags.set(
+                                                        DEFAULT_GLOBAL_TAGS
+                                                    );
+                                                    notifictions.addNotification(
+                                                        "Restored defaults! ✨",
+                                                        "blue"
+                                                    );
+                                                }}
+                                                color="gray"
+                                                >Restore Default Global Tags</Button
+                                            >
                                         </div>
                                     </div>
                                     <Button color="gray" iconOnly>
@@ -301,9 +382,7 @@
                             />
                         </div>
                     </div>
-                    <h2 class="text-2xl font-semibold text-white">
-                        Search
-                    </h2>
+                    <h2 class="text-2xl font-semibold text-white">Search</h2>
                     <div class="flex flex-col space-y-3">
                         <h3 class="text-white opacity-75 font-semibold">
                             Tags
