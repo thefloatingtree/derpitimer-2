@@ -5,7 +5,7 @@ export const tags = persist(writable(""), localStorage(), 'tags')
 export const newTagGroupName = writable("")
 export const sortOrder = persist(writable("Score"), localStorage(), 'sortOrder')
 export const minimumScore = persist(writable("100"), localStorage(), 'minimumScore')
-export const globalTags = persist(writable("safe, -animated, -edited screencap, -meme, -edit"), localStorage(), "globalTags")
+export const globalTags = persist(writable("safe, -animated, -edited screencap, -meme, -edit, -text, -butt, -cosplay"), localStorage(), "globalTags")
 export const timeInterval = persist(writable("1"), localStorage(), 'timeInterval')
 export const timeIntervalUnit = persist(writable("Minutes"), localStorage(), 'timeIntervalUnit')
 

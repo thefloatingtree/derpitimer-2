@@ -4,7 +4,7 @@
     import { minimumScore, sortOrder, tags } from "../store/settings";
     import { tagGroups } from "../store/tagGroups";
     import Button from "./Button.svelte";
-import notifications from "../store/notifications";
+    import notifications from "../store/notifications";
 
     let shouldAnimate = false;
     $: animate = (node, args) => (shouldAnimate ? fade(node, args) : null);
@@ -25,9 +25,14 @@ import notifications from "../store/notifications";
     // Encoding UTF8 ⇢ base64
 
     function b64EncodeUnicode(str) {
-        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-            return String.fromCharCode(parseInt(p1, 16))
-        }))
+        return btoa(
+            encodeURIComponent(str).replace(
+                /%([0-9A-F]{2})/g,
+                function (match, p1) {
+                    return String.fromCharCode(parseInt(p1, 16));
+                }
+            )
+        );
     }
 </script>
 
@@ -55,11 +60,17 @@ import notifications from "../store/notifications";
             </div>
             <div class="flex flex-col space-y-1">
                 <Button
-                    on:click={() => {
-                        notifications.addNotification("Share link copied to clipboard!", "blue")
-                        const base64Group = b64EncodeUnicode(JSON.stringify(group))
-                        const url = `${window.location.origin}/import/group?data=${base64Group}`
-                        navigator.clipboard.writeText(url)
+                    on:click={(e) => {
+                        e.stopPropagation();
+                        notifications.addNotification(
+                            "Share link copied to clipboard!",
+                            "blue"
+                        );
+                        const base64Group = b64EncodeUnicode(
+                            JSON.stringify(group)
+                        );
+                        const url = `${window.location.origin}/import/group?data=${base64Group}`;
+                        navigator.clipboard.writeText(url);
                     }}
                     color="transparent"
                     iconOnly
@@ -80,7 +91,10 @@ import notifications from "../store/notifications";
                     </svg>
                 </Button>
                 <Button
-                    on:click={() => onTagGroupDelete(group)}
+                    on:click={(e) => {
+                        e.stopPropagation();
+                        onTagGroupDelete(group);
+                    }}
                     color="transparent"
                     iconOnly
                 >

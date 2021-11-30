@@ -25,6 +25,7 @@
     "nanoid": "^3.1.30",
     "serve": "^13.0.2",
     "svelte-outside-click": "^1.1.1",
-    "svelte-routing": "^1.6.0"
+    "svelte-routing": "^1.6.0",
+    "svelte-textarea-autoresize": "^1.0.0"
   }
 }

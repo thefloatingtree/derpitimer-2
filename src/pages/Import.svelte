@@ -19,23 +19,29 @@
     }
 
     onMount(() => {
-        const url = new URL(window.location.href);
-        const data = url.searchParams.get("data");
+        try {
+            const url = new URL(window.location.href);
+            const data = url.searchParams.get("data");
 
-        const group = JSON.parse(b64DecodeUnicode(data));
+            const group = JSON.parse(b64DecodeUnicode(data));
 
-        tagGroups.update((groups) => {
-            console.log(group, groups);
-            return groups.find((g) => g.id === group.id)
-                ? groups
-                : [group, ...groups];
-        });
+            tagGroups.update((groups) => {
+                console.log(group, groups);
+                return groups.find((g) => g.id === group.id)
+                    ? groups
+                    : [group, ...groups];
+            });
+
+            notifications.addNotification(
+                `Imported tag group "${group.name}"`,
+                "blue"
+            );
+        } catch {
+            notifications.addNotification(
+                `Tag group import failed`
+            );
+        }
 
         navigate("/", { replace: true });
-
-        notifications.addNotification(
-            `Imported tag group "${group.name}"`,
-            "blue"
-        );
     });
 </script>

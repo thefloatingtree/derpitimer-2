@@ -30,6 +30,7 @@
     import TimerDisplay from "../lib/TimerDisplay.svelte";
     import Switch from "../lib/Switch.svelte";
     import { nanoid } from "nanoid";
+import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
 
     let continueDisabled = false;
     let showPreview = false;
@@ -182,12 +183,17 @@
                                         >
                                             Global Tags
                                         </h3>
-                                        <input
+                                        <!-- <textarea
                                             type="text"
-                                            class="transition-all ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 border-gray-200 border-2"
+                                            class="transition-all ease-out duration-300 w-full py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 border-gray-200 border-2 overflow-hidden"
                                             placeholder="safe, -animated"
+                                            rows="4"
+                                            on:input={(e) => {
+                                                console.log(e.target.scrollHeight)
+                                            }}
                                             bind:value={$globalTags}
-                                        />
+                                        ></textarea> -->
+                                        <AutoGrowTextArea bind:value={$globalTags}></AutoGrowTextArea>
                                         <!-- <div class="flex justify-between items-center">
                                             <h3 class="text-background-light-light font-bold">
                                                 Repeat Images
@@ -268,12 +274,7 @@
                         <h3 class="text-white opacity-75 font-semibold">
                             Tag List
                         </h3>
-                        <input
-                            type="text"
-                            class="transition-all bg-background-light text-white focus:bg-white focus:bg-opacity-20 ease-out duration-300 w-full h-12 py-2 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500"
-                            placeholder="twilight sparkle, cute"
-                            bind:value={$tags}
-                        />
+                        <AutoGrowTextArea bind:value={$tags} color="gray"></AutoGrowTextArea>
                         <h3 class="text-white opacity-75 font-semibold">
                             Minimum Score
                         </h3>
