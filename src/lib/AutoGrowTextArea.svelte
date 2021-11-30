@@ -32,7 +32,7 @@
 </script>
 
 <textarea
-    class="transition-shadow duration-300 ease-out w-full py-3 px-4 h-3 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 resize-none overflow-hidden {colors[color]}"
+    class="transition-shadow duration-300 ease-out w-full py-3 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 resize-none overflow-hidden {colors[color]}"
     {placeholder}
     bind:this={textarea}
     on:input={(e) => {
@@ -41,3 +41,9 @@
     }}
     use:autoresize
 />
+
+<style>
+    textarea {
+        min-height: 3rem;
+    }
+</style>
