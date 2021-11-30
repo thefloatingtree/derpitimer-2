@@ -31,7 +31,7 @@
     import TimerDisplay from "../lib/TimerDisplay.svelte";
     import Switch from "../lib/Switch.svelte";
     import { nanoid } from "nanoid";
-import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
+    import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
 
     let continueDisabled = false;
     let showPreview = false;
@@ -108,7 +108,7 @@ import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
 
 <div class="bg-background grid grid-cols-12 h-screen">
     <div
-        class="col-span-full md:col-span-6 lg:col-span-5 xl:col-span-4 2xl:col-span-3 h-full overflow-y-scroll"
+        class="col-span-full md:col-span-6 lg:col-span-5 xl:col-span-4 2xl:col-span-3 h-full bg-background md:overflow-y-scroll"
     >
         <div class="p-4 xs:p-6 lg:p-8 h-full">
             {#if !showPreview}
@@ -185,7 +185,9 @@ import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
                                             >
                                                 Global Tags
                                             </h3>
-                                            <AutoGrowTextArea bind:value={$globalTags}></AutoGrowTextArea>
+                                            <AutoGrowTextArea
+                                                bind:value={$globalTags}
+                                            />
                                         </div>
                                         <!-- <div class="space-y-3">
                                             <div class="flex justify-between items-center">
@@ -202,10 +204,20 @@ import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
                                             </div>
                                         </div> -->
                                         <div class="space-y-2">
-                                            <Button fullWidth on:click={() => {
-                                                randomSortSeed.set(Date.now())
-                                                notifictions.addNotification("Randomized! 🎲", "blue")
-                                            }} color="gray">Re-Randomize Image Order</Button>
+                                            <Button
+                                                fullWidth
+                                                on:click={() => {
+                                                    randomSortSeed.set(
+                                                        Date.now()
+                                                    );
+                                                    notifictions.addNotification(
+                                                        "Randomized! 🎲",
+                                                        "blue"
+                                                    );
+                                                }}
+                                                color="gray"
+                                                >Re-Randomize Image Order</Button
+                                            >
                                             <!-- <Button fullWidth on:click={() => {
                                                 
                                             }} color="gray">Restore Default Tag Groups</Button>
@@ -281,7 +293,11 @@ import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
                         <h3 class="text-white opacity-75 font-semibold">
                             Tag List
                         </h3>
-                        <AutoGrowTextArea bind:value={$tags} placeholder="twilight sparkle, cute . . ." color="gray"></AutoGrowTextArea>
+                        <AutoGrowTextArea
+                            bind:value={$tags}
+                            placeholder="twilight sparkle, cute . . ."
+                            color="gray"
+                        />
                         <h3 class="text-white opacity-75 font-semibold">
                             Minimum Score
                         </h3>

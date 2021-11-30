@@ -15,3 +15,7 @@ div::-webkit-scrollbar {
 div::-webkit-scrollbar-thumb {
     background-color: #2E2E2E;
 }
+
+body {
+    @apply bg-background;
+}
