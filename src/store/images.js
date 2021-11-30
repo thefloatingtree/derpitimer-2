@@ -23,6 +23,6 @@ export const nextPageURL = derived([currentPage, tags, sortOrder, globalTags, mi
     url += $tags ? "?q=" + cleanTags($tags + "," + $globalTags + ",safe" + ",score.gte:" + $minimumScore) : ""
     url += $sortOrder ? `&sf=${$sortOrder.toLowerCase()}:${$randomSortSeed}` : ""
     url += `&page=${$currentPage + 1}`
-
+    
     set(url)
 })

@@ -104,6 +104,15 @@
 
     let popoverWidth;
     let popovers = {};
+
+    $: {
+        $tags
+        $sortOrder
+        $minimumScore
+        $globalTags
+
+        currentPage.set(0)
+    }
 </script>
 
 <div class="bg-background grid grid-cols-12 h-screen">
@@ -128,6 +137,7 @@
                                 <Popover
                                     arrow={false}
                                     width={popoverWidth}
+                                    height=500
                                     xOffset="60px"
                                 >
                                     <Button color="gray" iconOnly>
@@ -160,13 +170,18 @@
                                         >
                                             What is Derpitimer?
                                         </h3>
-                                        <p>Put something here</p>
+                                        <p>A website that helps you do timed drawing studies, but with ponies!</p>
+                                        <p>Images are pulled from <a class="text-blue-500" href="https://derpibooru.org/">derpibooru.org</a></p>
+                                        <!-- <p>Originally inspired by <a class="text-blue-500" href="https://line-of-action.com/">https://line-of-action.com/</a></p> -->
                                         <h3
                                             class="text-background-light-light font-bold"
                                         >
                                             How do I use it?
                                         </h3>
-                                        <p>Put something here</p>
+                                        <p>Add derpibooru image tags into the input labled "Tags". If you don't know any tags, click on a tag group to load up example tags. Use a hyphen (-) to negate a tag.</p>
+                                        <p>Use the "Preview" button to see what comes up for your tags. Click on any image to pull up that image's tags, use this to narrow down your search further.</p>
+                                        <p>Under the settings cog, there are "Global Tags" which apply to every image search.</p>
+                                        <p>Once you feel happy with the list of images being returned, click the "Start" button to begin your timed drawing studies.</p>
                                     </div>
                                 </Popover>
                                 <Popover arrow={false} width={popoverWidth}>
@@ -287,11 +302,11 @@
                         </div>
                     </div>
                     <h2 class="text-2xl font-semibold text-white">
-                        Image Settings
+                        Search
                     </h2>
                     <div class="flex flex-col space-y-3">
                         <h3 class="text-white opacity-75 font-semibold">
-                            Tag List
+                            Tags
                         </h3>
                         <AutoGrowTextArea
                             bind:value={$tags}
@@ -307,7 +322,7 @@
                             bind:value={$minimumScore}
                         />
                         <h3 class="text-white opacity-75 font-semibold">
-                            Sort Order
+                            Sort By
                         </h3>
                         <Dropdown
                             items={["Random", "Score", "Upvotes", "ID"]}
