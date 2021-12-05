@@ -140,7 +140,7 @@
             {/if}
         </Button>
     </div>
-    <div class="absolute bottom-0 left-0 m-3 flex space-x-3">
+    <div class="absolute bottom-0 left-0 m-3 flex space-x-3 z-50">
         <Button
             iconOnly
             color="gray"
