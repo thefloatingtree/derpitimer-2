@@ -68,7 +68,7 @@
 
 <div class="w-screen h-screen bg-background bg-graph-texture">
     <div class="absolute m-3 flex flex-wrap gap-3 z-50">
-        <Button color="blue">
+        <Button color={timerDisplayPlaying ? "blue" : "gray"}>
             <TimerDisplay
                 bind:this={timerDisplay}
                 bind:playing={timerDisplayPlaying}

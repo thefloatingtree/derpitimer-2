@@ -363,7 +363,7 @@
                         </div>
                     </div>
                     <h2 class="text-2xl font-semibold text-white">
-                        Timer Settings
+                        Timer
                     </h2>
                     <div class="flex flex-col space-y-1">
                         <h3 class="text-white opacity-75 font-semibold">

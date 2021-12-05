@@ -63,7 +63,7 @@
 </script>
 
 <div class="space-y-6">
-    <Button on:click={onBack} fullWidth>Back</Button>
+    <Button on:click={onBack} fullWidth>Home</Button>
     {#if !isLoaded}
         <div
             in:fade={{ easing: cubicOut, duration: 500 }}
