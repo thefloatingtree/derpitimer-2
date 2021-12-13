@@ -10,6 +10,7 @@ export const minimumScore = persist(writable("100"), localStorage(), 'minimumSco
 export const globalTags = persist(writable(DEFAULT_GLOBAL_TAGS), localStorage(), "globalTags")
 export const timeInterval = persist(writable("1"), localStorage(), 'timeInterval')
 export const timeIntervalUnit = persist(writable("Minutes"), localStorage(), 'timeIntervalUnit')
+export const explicitImages = persist(writable(false), localStorage(), "explicitImages")
 
 // https://stackoverflow.com/questions/175739/how-can-i-check-if-a-string-is-a-valid-number
 function isNumeric(str) {

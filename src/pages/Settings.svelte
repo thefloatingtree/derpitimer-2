@@ -10,6 +10,7 @@
 
     import {
         DEFAULT_GLOBAL_TAGS,
+        explicitImages,
         globalTags,
         minimumScore,
         newTagGroupName,
@@ -29,7 +30,6 @@
     import Popover from "../lib/Popover.svelte";
     import { DEFAULT_GROUPS, tagGroups } from "../store/tagGroups";
     import notifictions from "../store/notifications";
-    import TimerDisplay from "../lib/TimerDisplay.svelte";
     import Switch from "../lib/Switch.svelte";
     import { nanoid } from "nanoid";
     import AutoGrowTextArea from "../lib/AutoGrowTextArea.svelte";
@@ -111,6 +111,7 @@
         $sortOrder;
         $minimumScore;
         $globalTags;
+        $explicitImages;
 
         currentPage.set(0);
     }
@@ -166,6 +167,7 @@
                                         >
                                             Help
                                         </h2>
+                                        <p>Made by <a href="https://twitter.com/thefloatingtree" class="text-blue-500">@thefloatingtree</a></p>
                                         <h3
                                             class="text-background-light-light font-bold"
                                         >
@@ -228,8 +230,8 @@
                                         >
                                             Settings
                                         </h2>
-                                        <!-- <div class="space-y-3">
-                                            <div
+                                        <div class="space-y-3">
+                                            <!-- <div
                                                 class="flex justify-between items-center"
                                             >
                                                 <h3
@@ -238,7 +240,7 @@
                                                     Sound
                                                 </h3>
                                                 <Switch />
-                                            </div>
+                                            </div> -->
                                             <div
                                                 class="flex justify-between items-center"
                                             >
@@ -247,9 +249,9 @@
                                                 >
                                                     Allow Explicit Images
                                                 </h3>
-                                                <Switch />
+                                                <Switch bind:active={$explicitImages} />
                                             </div>
-                                        </div> -->
+                                        </div>
                                         <div class="space-y-3">
                                             <h3
                                                 class="text-background-light-light font-bold"
