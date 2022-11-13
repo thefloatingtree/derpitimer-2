@@ -11,7 +11,7 @@ import notifications from "../store/notifications";
     let derpiSourceUrl;
     let isLoading = true;
 
-    let useStaticFeaturedImage = true;
+    let useStaticFeaturedImage = false;
 
     fetch("https://derpibooru.org/api/v1/json/images/featured")
         .then((res) => res.json())
